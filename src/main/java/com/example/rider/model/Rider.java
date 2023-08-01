@@ -3,6 +3,7 @@ package com.example.rider.model;
 import javax.persistence.*;
 
 @Entity
+@Table(name = "riders")
 public class Rider {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -20,6 +21,8 @@ public class Rider {
 
 	@Column
 	private String password;
+
+	public Rider() {}
 
 	public Rider(String name, String phone, String email, String password) {
 		this.name = name;
