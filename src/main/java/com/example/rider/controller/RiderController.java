@@ -19,9 +19,6 @@ public class RiderController {
 	@Autowired
 	private RiderService service;
 
-	@Autowired
-	private PasswordEncoder passwordEncoder;
-
 	@GetMapping("/")
 	private String home() {
 		return "Welcome Rider";
@@ -41,8 +38,8 @@ public class RiderController {
 	@PostMapping("/login")
 	private ResponseEntity<?> login(@RequestBody Map<String, String> payload) { // payload: (cred, password)
 		try {
-			Rider r = service.authRider(payload.get("cred"), payload.get("password"));
-			return ResponseEntity.ok("Login successful... Welcome " + r.getName());
+			String token = service.authRider(payload.get("cred"), payload.get("password"));
+			return ResponseEntity.ok(token);
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
 		}

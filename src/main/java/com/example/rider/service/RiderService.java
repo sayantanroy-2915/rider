@@ -1,5 +1,6 @@
 package com.example.rider.service;
 
+import com.example.rider.config.JwtTokenUtil;
 import com.example.rider.exception.CustomException;
 import com.example.rider.model.Rider;
 import com.example.rider.repository.RiderRepository;
@@ -16,20 +17,25 @@ public class RiderService {
 	private RiderRepository repo;
 
 	@Autowired
+	private JwtTokenUtil jwtTokenUtil;
+
+	@Autowired
 	private PasswordEncoder passwordEncoder;
 
-	public Rider addRider (Rider rider) throws Exception {
+	public Rider addRider (Rider rider) {
 		if (rider.getEmail().isEmpty())
 			rider.setEmail(null);
 		rider.setPassword(passwordEncoder.encode(rider.getPassword()));
 		return repo.save(rider);
 	}
 
-	public Rider authRider(String cred, String password) throws Exception {
-		Rider r = repo.findByContact(cred);
+	public String authRider(String cred, String password) throws Exception {
+		Rider r = repo.findByContact(cred).get();
 		if (r != null && passwordEncoder.matches(password, r.getPassword()))
-			return r;
+			return jwtTokenUtil.generateToken(r);
 		throw new CustomException("Invalid credentials");
 	}
+
+	
 
 }

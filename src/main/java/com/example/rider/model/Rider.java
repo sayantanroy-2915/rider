@@ -7,7 +7,7 @@ import javax.persistence.*;
 public class Rider {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Integer Id;
+	private Integer id;
 
 	@Column
 	private String name;
@@ -32,7 +32,7 @@ public class Rider {
 	}
 
 	public Integer getId() {
-		return Id;
+		return id;
 	}
 
 	public String getName() {
