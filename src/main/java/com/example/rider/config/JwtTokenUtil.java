@@ -27,10 +27,12 @@ public class JwtTokenUtil {
         claims.put("phone", rider.getPhone());
         if (rider.getEmail() != null)
             claims.put("email", rider.getEmail());
-        Date expiry = new Date(System.currentTimeMillis() + tokenValidity);
+        long now = System.currentTimeMillis();
+        claims.put("login_time",now);
+        Date expiry = new Date(now + tokenValidity);
         return Jwts.builder()
                 .setClaims(claims)
-                .setIssuedAt(new Date())
+                .setIssuedAt(new Date(now))
                 .setExpiration(expiry)
                 .signWith(SignatureAlgorithm.HS512, secret)
                 .compact();

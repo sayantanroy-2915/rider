@@ -1,0 +1,36 @@
+Folder structure:
+ * docker-compose.yml
+ * create_table.sql
+ * data (empty folder)
+
+========================
+FILE: docker-compose.yml
+========================
+
+version: '3.1'
+
+services:
+  rider-db:
+    image: postgres:15
+    container_name: rider_db
+    restart: always
+    ports:
+      - 5432:5432
+    volumes:
+      - ./data:/var/lib/postgresql/data
+      - ./create_table.sql:/docker-entrypoint-initdb.d/create_table.sql
+    environment:
+      POSTGRES_DB: root
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: postgres
+
+======================
+FILE: create_table.sql
+======================
+
+create table if not exists riders (
+id bigserial primary key,
+name varchar(50) not null,
+phone varchar(16) unique not null,
+email varchar(50) unique,
+password varchar(100) not null);

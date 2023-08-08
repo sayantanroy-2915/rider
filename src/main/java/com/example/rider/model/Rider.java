@@ -6,8 +6,8 @@ import javax.persistence.*;
 @Table(name = "riders")
 public class Rider {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Integer id;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
 	@Column
 	private String name;
@@ -31,7 +31,7 @@ public class Rider {
 		this.password = password;
 	}
 
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 
