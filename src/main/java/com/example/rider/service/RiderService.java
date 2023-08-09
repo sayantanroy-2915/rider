@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.regex.Pattern;
+import java.util.Optional;
 
 @Service
 public class RiderService {
@@ -30,12 +30,13 @@ public class RiderService {
 	}
 
 	public String authRider(String cred, String password) throws Exception {
-		Rider r = repo.findByContact(cred).get();
-		if (r != null && passwordEncoder.matches(password, r.getPassword()))
-			return jwtTokenUtil.generateToken(r);
+		Optional<Rider> opr = repo.findByContact(cred);
+		if (opr.isPresent()) {
+			Rider r = opr.get();
+			if (passwordEncoder.matches(password, r.getPassword()))
+				return jwtTokenUtil.generateToken(r);
+		}
 		throw new CustomException("Invalid credentials");
 	}
-
-	
 
 }

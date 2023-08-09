@@ -3,6 +3,7 @@ package com.example.rider.controller;
 import com.example.rider.model.Rider;
 import com.example.rider.service.RiderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -39,7 +40,8 @@ public class RiderController {
 	private ResponseEntity<?> login(@RequestBody Map<String, String> payload) { // payload: (cred, password)
 		try {
 			String token = service.authRider(payload.get("cred"), payload.get("password"));
-			return ResponseEntity.ok(token);
+			String cookieHeaderValue = "RiderAppJWT="+token+"; HttpOnly; Max-Age=86400; Path=/";
+			return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookieHeaderValue).body("Login Successful");
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
 		}
