@@ -40,7 +40,7 @@ public class RiderController {
 	private ResponseEntity<?> login(@RequestBody Map<String, String> payload) { // payload: (cred, password)
 		try {
 			String token = service.authRider(payload.get("cred"), payload.get("password"));
-			String cookieHeaderValue = "RiderAppJWT="+token+"; HttpOnly; Max-Age=86400; Path=/";
+			String cookieHeaderValue = "RiderAppJWT="+token+"; HttpOnly; Secure; Max-Age=86400; Path=/";
 			return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookieHeaderValue).body("Login Successful");
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
