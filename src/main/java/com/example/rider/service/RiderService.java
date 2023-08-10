@@ -23,9 +23,7 @@ public class RiderService {
 	private PasswordEncoder passwordEncoder;
 
 	public Rider addRider (Rider rider) {
-		if (rider.getEmail().isEmpty())
-			rider.setEmail(null);
-		rider.setPassword(passwordEncoder.encode(rider.getPassword()));
+		// rider.setPassword(passwordEncoder.encode(rider.getPassword()));
 		return repo.save(rider);
 	}
 
@@ -33,10 +31,14 @@ public class RiderService {
 		Optional<Rider> opr = repo.findByContact(cred);
 		if (opr.isPresent()) {
 			Rider r = opr.get();
+			System.out.println(password);
+			System.out.println(r.getPassword());
+			System.out.println(passwordEncoder.matches(password, r.getPassword()));
+			System.out.println(password.equals(r.getPassword()));
 			if (passwordEncoder.matches(password, r.getPassword()))
 				return jwtTokenUtil.generateToken(r);
 		}
-		throw new CustomException("Invalid credentials");
+		throw new CustomException("Invalid credentials: "+cred);
 	}
 
 }
