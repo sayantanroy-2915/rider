@@ -1,9 +1,10 @@
 package com.example.rider.service;
 
-import com.example.rider.config.JwtTokenUtil;
 import com.example.rider.exception.CustomException;
+import com.example.rider.model.AuthReq;
 import com.example.rider.model.Rider;
 import com.example.rider.repository.RiderRepository;
+import com.example.rider.util.JWTUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -17,28 +18,24 @@ public class RiderService {
 	private RiderRepository repo;
 
 	@Autowired
-	private JwtTokenUtil jwtTokenUtil;
+	private PasswordEncoder passwordEncoder;
 
 	@Autowired
-	private PasswordEncoder passwordEncoder;
+	private JWTUtil jwtUtil;
 
 	public Rider addRider (Rider rider) {
 		// rider.setPassword(passwordEncoder.encode(rider.getPassword()));
 		return repo.save(rider);
 	}
 
-	public String authRider(String cred, String password) throws Exception {
-		Optional<Rider> opr = repo.findByContact(cred);
+	public String authRider(AuthReq authReq) throws Exception {
+		Optional<Rider> opr = repo.findByContact(authReq.getCred());
 		if (opr.isPresent()) {
 			Rider r = opr.get();
-			System.out.println(password);
-			System.out.println(r.getPassword());
-			System.out.println(passwordEncoder.matches(password, r.getPassword()));
-			System.out.println(password.equals(r.getPassword()));
-			if (passwordEncoder.matches(password, r.getPassword()))
-				return jwtTokenUtil.generateToken(r);
+			if (passwordEncoder.matches(authReq.getPassword(), r.getPassword()))
+				return jwtUtil.generateToken(r);
 		}
-		throw new CustomException("Invalid credentials: "+cred);
+		throw new CustomException("Invalid credentials: "+authReq.getCred());
 	}
 
 }

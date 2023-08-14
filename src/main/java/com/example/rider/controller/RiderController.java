@@ -1,5 +1,7 @@
 package com.example.rider.controller;
 
+import com.example.rider.model.AuthReq;
+import com.example.rider.model.AuthRes;
 import com.example.rider.model.Rider;
 import com.example.rider.service.RiderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +20,7 @@ public class RiderController {
 	@Autowired
 	private RiderService service;
 
-	@GetMapping("/")
+	@RequestMapping("/")
 	private String home() {
 		return "Welcome Rider";
 	}
@@ -27,7 +29,7 @@ public class RiderController {
 	private ResponseEntity<?> register(@RequestBody Rider rider) {
 		try {
 			Rider r = service.addRider(rider);
-			return ResponseEntity.ok("Rider named " + r.getName()+ " added with ID " + r.getId());
+			return ResponseEntity.status(HttpStatus.CREATED).body("Rider named " + r.getName()+ " added with ID " + r.getId());
 		}
 		catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
@@ -35,11 +37,9 @@ public class RiderController {
 	}
 
 	@PostMapping("/login")
-	private ResponseEntity<?> login(@RequestBody Map<String, String> payload) { // payload: (cred, password)
+	private ResponseEntity<?> login(@RequestBody AuthReq authReq) {
 		try {
-			String token = service.authRider(payload.get("cred"), payload.get("password"));
-			String cookieHeaderValue = "RiderAppJWT="+token+"; HttpOnly; Secure; Max-Age=86400; Path=/";
-			return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookieHeaderValue).body("Login Successful");
+			return ResponseEntity.ok(new AuthRes(service.authRider(authReq)));
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
 		}
