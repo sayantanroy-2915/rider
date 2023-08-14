@@ -12,7 +12,6 @@ public class Rider {
 	@Column
 	private String name;
 
-
 	@Column(unique = true)
 	private String phone;
 
@@ -22,13 +21,17 @@ public class Rider {
 	@Column
 	private String password;
 
+	@Column
+	private String status;
+
 	public Rider() {}
 
-	public Rider(String name, String phone, String email, String password) {
-		this.name = name;
-		this.phone = phone;
-		this.email = email;
-		this.password = password;
+	public Rider(RiderRegReq riderRegReq) {
+		this.name = riderRegReq.getName();
+		this.phone = riderRegReq.getPhone();
+		this.email = riderRegReq.getEmail();
+		this.password = riderRegReq.getPassword();
+		this.status = "unavailable";
 	}
 
 	public Long getId() {
@@ -65,5 +68,13 @@ public class Rider {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
 	}
 }

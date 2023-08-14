@@ -2,6 +2,7 @@ package com.example.rider.service;
 
 import com.example.rider.exception.CustomException;
 import com.example.rider.model.AuthReq;
+import com.example.rider.model.AuthUpdate;
 import com.example.rider.model.Rider;
 import com.example.rider.repository.RiderRepository;
 import com.example.rider.util.JWTUtil;
@@ -24,7 +25,6 @@ public class RiderService {
 	private JWTUtil jwtUtil;
 
 	public Rider addRider (Rider rider) {
-		// rider.setPassword(passwordEncoder.encode(rider.getPassword()));
 		return repo.save(rider);
 	}
 
@@ -34,8 +34,16 @@ public class RiderService {
 			Rider r = opr.get();
 			if (passwordEncoder.matches(authReq.getPassword(), r.getPassword()))
 				return jwtUtil.generateToken(r);
+			throw new CustomException("Invalid credentials: "+authReq.getCred());
 		}
-		throw new CustomException("Invalid credentials: "+authReq.getCred());
+		throw new CustomException("Rider not found");
 	}
+
+/*	private boolean update(AuthUpdate authUpdate) {
+		switch (authUpdate.getField()) {
+			case "password":
+
+		}
+	}*/
 
 }
