@@ -1,9 +1,6 @@
 package com.example.rider.controller;
 
-import com.example.rider.model.AuthReq;
-import com.example.rider.model.AuthRes;
-import com.example.rider.model.Rider;
-import com.example.rider.model.RiderRegReq;
+import com.example.rider.model.*;
 import com.example.rider.service.RiderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,7 +25,7 @@ public class RiderController {
 		return "Welcome Rider";
 	}
 
-	@PostMapping("/signupapi")	// From API call, encodes password
+	@PostMapping("/signup-api")	// From API call, encodes password
 	private ResponseEntity<?> register(@RequestBody RiderRegReq riderRegReq) {
 		try {
 			Rider rider = new Rider(riderRegReq);
@@ -41,7 +38,7 @@ public class RiderController {
 		}
 	}
 
-	@PostMapping("/signupweb")	// From Frontend, doesn't encode password
+	@PostMapping("/signup-web")	// From Frontend, doesn't encode password
 	private ResponseEntity<?> signup(@RequestBody RiderRegReq riderRegReq) {
 		try {
 			Rider r = service.addRider(new Rider(riderRegReq));
@@ -55,7 +52,8 @@ public class RiderController {
 	@PostMapping("/login")
 	private ResponseEntity<?> login(@RequestBody AuthReq authReq) {
 		try {
-			return ResponseEntity.ok(new AuthRes(service.authRider(authReq)));
+			String token = service.authRider(authReq);
+			return ResponseEntity.ok(token);
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
 		}

@@ -12,6 +12,9 @@ import java.util.Optional;
 @Repository
 public interface RiderRepository extends JpaRepository<Rider, Long> {
 
+    @Override
+    Optional<Rider> findById(Long riderId);
+
     @Query("SELECT r FROM Rider r WHERE r.phone = :cred OR r.email = :cred")
     Optional<Rider> findByContact(@Param("cred") String cred);
 }

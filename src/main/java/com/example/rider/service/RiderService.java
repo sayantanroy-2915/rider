@@ -4,6 +4,7 @@ import com.example.rider.exception.CustomException;
 import com.example.rider.model.AuthReq;
 import com.example.rider.model.AuthUpdate;
 import com.example.rider.model.Rider;
+import com.example.rider.model.RiderDetails;
 import com.example.rider.repository.RiderRepository;
 import com.example.rider.util.JWTUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,10 +34,21 @@ public class RiderService {
 		if (opr.isPresent()) {
 			Rider r = opr.get();
 			if (passwordEncoder.matches(authReq.getPassword(), r.getPassword()))
-				return jwtUtil.generateToken(r);
-			throw new CustomException("Invalid credentials: "+authReq.getCred());
+				return jwtUtil.generateToken(r.getId());
+			throw new CustomException("Invalid credentials: " + authReq.getCred());
 		}
 		throw new CustomException("Rider not found");
+	}
+
+	public RiderDetails authRiderDetails(String jwt) throws Exception {
+		if (!jwtUtil.isTokenExpired(jwt)) {
+			Long riderId = jwtUtil.getRiderId(jwt);
+			Optional<Rider> opr = repo.findById(riderId);
+			if (opr.isPresent())
+				return new RiderDetails(opr.get());
+			throw new CustomException("Rider not found");
+		}
+		throw new CustomException("Token expired");
 	}
 
 /*	private boolean update(AuthUpdate authUpdate) {
