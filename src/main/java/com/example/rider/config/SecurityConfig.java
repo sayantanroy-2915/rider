@@ -20,8 +20,7 @@ public class SecurityConfig {
 
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-		http.cors();
-		http.httpBasic(Customizer.withDefaults());
+		http.cors().and().httpBasic(Customizer.withDefaults());
 		return http.build();
 	}
 
