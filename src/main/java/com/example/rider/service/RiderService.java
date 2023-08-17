@@ -40,9 +40,9 @@ public class RiderService {
 		throw new CustomException("Rider not found");
 	}
 
-	public RiderDetails authRiderDetails(String jwt) throws Exception {
-		if (!jwtUtil.isTokenExpired(jwt)) {
-			Long riderId = jwtUtil.getRiderId(jwt);
+	public RiderDetails authRiderDetails(String token) throws Exception {
+		if (!jwtUtil.isTokenExpired(token)) {
+			Long riderId = jwtUtil.getRiderId(token);
 			Optional<Rider> opr = repo.findById(riderId);
 			if (opr.isPresent())
 				return new RiderDetails(opr.get());

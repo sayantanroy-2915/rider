@@ -33,5 +33,5 @@ id bigserial primary key,
 name varchar(50) not null,
 phone varchar(16) unique not null,
 email varchar(50) unique,
-status varchar(12) default 'unavailable'
+status varchar(12) default 'unavailable',
 password varchar(100) not null);
