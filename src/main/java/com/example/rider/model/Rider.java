@@ -1,10 +1,15 @@
 package com.example.rider.model;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.Collection;
 
 @Entity
 @Table(name = "riders")
-public class Rider {
+public class Rider implements UserDetails {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -24,9 +29,12 @@ public class Rider {
 	@Column
 	private String status;
 
-	public Rider() {}
+	public Rider() {
+		super();
+	}
 
 	public Rider(RiderRegReq riderRegReq) {
+		super();
 		this.name = riderRegReq.getName();
 		this.phone = riderRegReq.getPhone();
 		this.email = riderRegReq.getEmail();
@@ -62,6 +70,7 @@ public class Rider {
 		this.email = email;
 	}
 
+	@Override
 	public String getPassword() {
 		return password;
 	}
@@ -76,5 +85,35 @@ public class Rider {
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		return new ArrayList<RiderRole>();
+	}
+
+	@Override
+	public String getUsername() {
+		return null;
+	}
+
+	@Override
+	public boolean isAccountNonExpired() {
+		return true;
+	}
+
+	@Override
+	public boolean isAccountNonLocked() {
+		return true;
+	}
+
+	@Override
+	public boolean isCredentialsNonExpired() {
+		return true;
+	}
+
+	@Override
+	public boolean isEnabled() {
+		return true;
 	}
 }
