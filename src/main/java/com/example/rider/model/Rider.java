@@ -4,8 +4,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 
 @Entity
 @Table(name = "riders")
@@ -33,12 +33,12 @@ public class Rider implements UserDetails {
 		super();
 	}
 
-	public Rider(RiderRegReq riderRegReq) {
+	public Rider(RiderRegDTO riderRegDTO) {
 		super();
-		this.name = riderRegReq.getName();
-		this.phone = riderRegReq.getPhone();
-		this.email = riderRegReq.getEmail();
-		this.password = riderRegReq.getPassword();
+		this.name = riderRegDTO.getName();
+		this.phone = riderRegDTO.getPhone();
+		this.email = riderRegDTO.getEmail();
+		this.password = riderRegDTO.getPassword();
 		this.status = "unavailable";
 	}
 
@@ -89,7 +89,9 @@ public class Rider implements UserDetails {
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return new ArrayList<RiderRole>();
+		HashSet<RiderRole> authority = new HashSet<>();
+		authority.add(new RiderRole());
+		return authority;
 	}
 
 	@Override

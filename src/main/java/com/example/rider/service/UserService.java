@@ -2,7 +2,6 @@ package com.example.rider.service;
 
 import com.example.rider.exception.CustomException;
 import com.example.rider.model.AuthReq;
-import com.example.rider.model.AuthUpdate;
 import com.example.rider.model.Rider;
 import com.example.rider.model.RiderDetails;
 import com.example.rider.repository.RiderRepository;
@@ -17,7 +16,7 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-public class RiderService implements UserDetailsService {
+public class UserService implements UserDetailsService {
 
 	@Autowired
 	private RiderRepository repo;
