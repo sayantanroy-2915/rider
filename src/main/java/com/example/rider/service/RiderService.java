@@ -8,13 +8,16 @@ import com.example.rider.model.RiderDetails;
 import com.example.rider.repository.RiderRepository;
 import com.example.rider.util.JWTUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
 @Service
-public class RiderService {
+public class RiderService implements UserDetailsService {
 
 	@Autowired
 	private RiderRepository repo;
@@ -49,6 +52,14 @@ public class RiderService {
 			throw new CustomException("Rider not found");
 		}
 		throw new CustomException("Token expired");
+	}
+
+	@Override
+	public UserDetails loadUserByUsername(String cred) throws UsernameNotFoundException {
+		Optional<Rider> opr = repo.findByContact(cred);
+		if (opr.isPresent())
+			return opr.get();
+		throw new UsernameNotFoundException("Rider not found");
 	}
 
 /*	private boolean update(AuthUpdate authUpdate) {
