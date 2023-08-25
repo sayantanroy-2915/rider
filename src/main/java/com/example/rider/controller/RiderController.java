@@ -25,9 +25,9 @@ public class RiderController {
 	}
 
 	@PostMapping("/signup-api")	// From API call, encodes password
-	private ResponseEntity<?> signupApi(@RequestBody RiderRegDTO riderRegDTO) {
+	private ResponseEntity<?> signupApi(@RequestBody RegisterDTO registerDTO) {
 		try {
-			Rider rider = new Rider(riderRegDTO);
+			Rider rider = new Rider(registerDTO);
 			rider.setPassword(passwordEncoder.encode(rider.getPassword()));
 			rider = service.addRider(rider);
 			return ResponseEntity.status(HttpStatus.CREATED).body("Rider named " + rider.getName()+ " added with ID " + rider.getId());
@@ -38,9 +38,9 @@ public class RiderController {
 	}
 
 	@PostMapping("/signup-web")	// From Frontend, doesn't encode password
-	private ResponseEntity<?> signupWeb(@RequestBody RiderRegDTO riderRegDTO) {
+	private ResponseEntity<?> signupWeb(@RequestBody RegisterDTO registerDTO) {
 		try {
-			Rider r = service.addRider(new Rider(riderRegDTO));
+			Rider r = service.addRider(new Rider(registerDTO));
 			return ResponseEntity.status(HttpStatus.CREATED).body("Rider named " + r.getName()+ " added with ID " + r.getId());
 		}
 		catch (Exception e) {
@@ -49,9 +49,9 @@ public class RiderController {
 	}
 
 	@PostMapping("/login")
-	private ResponseEntity<?> login(@RequestBody AuthReq authReq) {
+	private ResponseEntity<?> login(@RequestBody LoginReqDTO loginReqDTO) {
 		try {
-			String token = service.authRider(authReq);
+			String token = service.authRider(loginReqDTO);
 			return ResponseEntity.ok(token);
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());

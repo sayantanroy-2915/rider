@@ -1,7 +1,7 @@
 package com.example.rider.service;
 
 import com.example.rider.exception.CustomException;
-import com.example.rider.model.AuthReq;
+import com.example.rider.model.LoginReqDTO;
 import com.example.rider.model.Rider;
 import com.example.rider.model.RiderDetails;
 import com.example.rider.repository.RiderRepository;
@@ -31,13 +31,13 @@ public class UserService implements UserDetailsService {
 		return repo.save(rider);
 	}
 
-	public String authRider(AuthReq authReq) throws Exception {
-		Optional<Rider> opr = repo.findByContact(authReq.getCred());
+	public String authRider(LoginReqDTO loginReqDTO) throws Exception {
+		Optional<Rider> opr = repo.findByContact(loginReqDTO.getCred());
 		if (opr.isPresent()) {
 			Rider r = opr.get();
-			if (passwordEncoder.matches(authReq.getPassword(), r.getPassword()))
+			if (passwordEncoder.matches(loginReqDTO.getPassword(), r.getPassword()))
 				return jwtUtil.generateToken(r.getId());
-			throw new CustomException("Invalid credentials: " + authReq.getCred());
+			throw new CustomException("Invalid credentials: " + loginReqDTO.getCred());
 		}
 		throw new CustomException("Rider not found");
 	}

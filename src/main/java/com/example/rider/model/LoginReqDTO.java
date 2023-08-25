@@ -1,12 +1,12 @@
 package com.example.rider.model;
 
-public class AuthReq {
+public class LoginReqDTO {
     private String cred;
     private String password;
 
-    public AuthReq() {}
+    public LoginReqDTO() {}
 
-    public AuthReq(String cred, String password) {
+    public LoginReqDTO(String cred, String password) {
         this.cred = cred;
         this.password = password;
     }

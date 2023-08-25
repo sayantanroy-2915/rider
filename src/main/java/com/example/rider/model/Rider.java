@@ -33,12 +33,12 @@ public class Rider implements UserDetails {
 		super();
 	}
 
-	public Rider(RiderRegDTO riderRegDTO) {
+	public Rider(RegisterDTO registerDTO) {
 		super();
-		this.name = riderRegDTO.getName();
-		this.phone = riderRegDTO.getPhone();
-		this.email = riderRegDTO.getEmail();
-		this.password = riderRegDTO.getPassword();
+		this.name = registerDTO.getName();
+		this.phone = registerDTO.getPhone();
+		this.email = registerDTO.getEmail();
+		this.password = registerDTO.getPassword();
 		this.status = "unavailable";
 	}
 
