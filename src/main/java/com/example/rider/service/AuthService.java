@@ -31,19 +31,17 @@ public class AuthService {
     private TokenService tokenService;
 
     public Rider register(RegisterDTO rider) {
-        rider.setPassword(passwordEncoder.encode(rider.getPassword()));
+        rider.setPassword("{bcrypt}"+passwordEncoder.encode(rider.getPassword()));
         return repo.save(new Rider(rider));
     }
 
-    public LoginResDTO login(LoginReqDTO loginReqDTO) {
-        try {
-            Authentication auth = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginReqDTO.getCred(), loginReqDTO.getPassword())
-            );
-            String token = tokenService.generateJwt(auth);
-            return new LoginResDTO(repo.findByContact(loginReqDTO.getCred()).get(), token);
-        } catch (AuthenticationException e) {
-            return new LoginResDTO(null,null);
-        }
+    public LoginResDTO login(LoginReqDTO loginReqDTO) throws AuthenticationException{
+        System.out.println("In AuthService: "+loginReqDTO);
+        Authentication auth = authenticationManager.authenticate(
+            new UsernamePasswordAuthenticationToken(loginReqDTO.getCred(), loginReqDTO.getPassword())
+        );
+        System.out.println("Authentication: "+auth);
+        String token = tokenService.generateJwt(auth);
+        return new LoginResDTO(repo.findByContact(loginReqDTO.getCred()).get(), token);
     }
 }

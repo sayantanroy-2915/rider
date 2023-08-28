@@ -6,6 +6,9 @@ import com.example.rider.model.LoginResDTO;
 import com.example.rider.model.RegisterDTO;
 import com.example.rider.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -22,7 +25,12 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public LoginResDTO login(@RequestBody LoginReqDTO body) {
-        return authService.login(body);
+    public ResponseEntity<?> login(@RequestBody LoginReqDTO body) {
+        try {
+            System.out.println("In AuthController: "+body);
+            return ResponseEntity.ok(authService.login(body));
+        } catch (AuthenticationException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
+        }
     }
 }

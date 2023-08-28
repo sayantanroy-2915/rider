@@ -54,8 +54,9 @@ public class UserService implements UserDetailsService {
 	}
 
 	@Override
-	public UserDetails loadUserByUsername(String cred) throws UsernameNotFoundException {
-		Optional<Rider> opr = repo.findByContact(cred);
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		Optional<Rider> opr = repo.findByContact(username);
+		System.out.println(opr);
 		if (opr.isPresent())
 			return opr.get();
 		throw new UsernameNotFoundException("Rider not found");

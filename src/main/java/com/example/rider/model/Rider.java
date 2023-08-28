@@ -10,6 +10,16 @@ import java.util.HashSet;
 @Entity
 @Table(name = "riders")
 public class Rider implements UserDetails {
+	@Override
+	public String toString() {
+		return "Rider{" +
+				"id=" + id +
+				", name='" + name + '\'' +
+				", phone='" + phone + '\'' +
+				", email='" + email + '\'' +
+				'}';
+	}
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
