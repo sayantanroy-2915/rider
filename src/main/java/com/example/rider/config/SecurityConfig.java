@@ -56,6 +56,7 @@ public class SecurityConfig {
 				.csrf(csrf -> csrf.disable())
 				.authorizeHttpRequests(auth -> {
 					auth.requestMatchers(new AntPathRequestMatcher("/auth/**")).permitAll();
+					auth.requestMatchers(new AntPathRequestMatcher("/order/**")).permitAll();
 					auth.anyRequest().authenticated();
 				})
 				.oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt)

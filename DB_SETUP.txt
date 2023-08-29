@@ -18,15 +18,15 @@ services:
       - 5432:5432
     volumes:
       - ./data:/var/lib/postgresql/data
-      - ./create_table.sql:/docker-entrypoint-initdb.d/create_table.sql
+      - ./create_tables.sql:/docker-entrypoint-initdb.d/create_tables.sql
     environment:
       POSTGRES_DB: root
       POSTGRES_USER: root
       POSTGRES_PASSWORD: postgres
 
-======================
-FILE: create_table.sql
-======================
+=======================
+FILE: create_tables.sql
+=======================
 
 create table if not exists riders (
 id bigserial primary key,
@@ -38,12 +38,16 @@ password varchar(100) not null);
 
 create table if not exists orders (
 id bigserial primary key,
-customerdetails varchar(100),
-customerlocation point,
-restaurantdetails varchar(100),
-restaurantlocation point,
+items varchar(200),
+restaurant_details varchar(100),
+restaurant_location_x numeric,
+restaurant_location_y numeric,
+customer_details varchar(100),
+customer_location_x numeric,
+customer_location_y numeric,
 status varchar(12) default 'placed',
-placedat timestamp default current_timestamp,
-deliveredat timestamp,
-billamt money,
-paymentmode varchar(20));
+placed_at timestamp default current_timestamp,
+delivered_at timestamp,
+rider_id bigint references riders(id),
+bill_amt numeric,
+payment_mode varchar(20));
