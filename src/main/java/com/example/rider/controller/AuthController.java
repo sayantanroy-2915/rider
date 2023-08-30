@@ -1,8 +1,6 @@
 package com.example.rider.controller;
 
-import com.example.rider.model.Rider;
 import com.example.rider.model.LoginReqDTO;
-import com.example.rider.model.LoginResDTO;
 import com.example.rider.model.RegisterDTO;
 import com.example.rider.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +18,12 @@ public class AuthController {
     private AuthService authService;
 
     @PostMapping("/register")
-    public Rider register(@RequestBody RegisterDTO body) {
-        return authService.register(body);
+    public ResponseEntity<?> register(@RequestBody RegisterDTO body) {
+        try {
+            return ResponseEntity.ok(authService.register(body));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
     }
 
     @PostMapping("/login")
@@ -31,6 +33,8 @@ public class AuthController {
             return ResponseEntity.ok(authService.login(body));
         } catch (AuthenticationException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 }
