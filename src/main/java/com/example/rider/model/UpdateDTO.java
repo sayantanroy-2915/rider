@@ -21,4 +21,13 @@ public class UpdateDTO {
     public String getJwt() {
         return jwt;
     }
+
+    @Override
+    public String toString() {
+        return "UpdateDTO{" +
+                "rider=" + rider +
+                ", oldPassword='" + oldPassword + '\'' +
+                ", jwt='" + jwt + '\'' +
+                '}';
+    }
 }

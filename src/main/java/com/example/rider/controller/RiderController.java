@@ -19,15 +19,16 @@ public class RiderController {
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
-	@RequestMapping("/")
+	@GetMapping("/")
 	private String home() {
 		return "Welcome Rider";
 	}
 
-	@PostMapping("/update")
+	@PostMapping("/update-all")
 	private ResponseEntity<?> update(@RequestBody UpdateDTO updateDTO) {
 		try {
-			return ResponseEntity.ok("Updated");
+			System.out.println(updateDTO);
+			return ResponseEntity.ok(null);
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
 		}
