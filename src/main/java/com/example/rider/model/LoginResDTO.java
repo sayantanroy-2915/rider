@@ -1,23 +1,23 @@
 package com.example.rider.model;
 
 public class LoginResDTO {
-    private Rider rider;
+    private RiderDetails rider;
     private String jwt;
 
     public LoginResDTO() {
         super();
     }
 
-    public LoginResDTO(Rider rider, String jwt) {
+    public LoginResDTO(RiderDetails rider, String jwt) {
         this.rider = rider;
         this.jwt = jwt;
     }
 
-    public Rider getRider() {
+    public RiderDetails getRider() {
         return rider;
     }
 
-    public void setRider(Rider rider) {
+    public void setRider(RiderDetails rider) {
         this.rider = rider;
     }
 

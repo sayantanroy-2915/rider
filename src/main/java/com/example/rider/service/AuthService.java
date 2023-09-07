@@ -33,12 +33,10 @@ public class AuthService {
     }
 
     public LoginResDTO login(LoginReqDTO loginReqDTO) throws AuthenticationException{
-        System.out.println("In AuthService: "+loginReqDTO);
         Authentication auth = authenticationManager.authenticate(
             new UsernamePasswordAuthenticationToken(loginReqDTO.getCred(), loginReqDTO.getPassword())
         );
-        System.out.println("Authentication: "+auth);
         String token = tokenService.generateJwt(auth);
-        return new LoginResDTO(repo.findByContact(loginReqDTO.getCred()).get(), token);
+        return new LoginResDTO(new RiderDetails(repo.findByContact(loginReqDTO.getCred()).get()), token);
     }
 }

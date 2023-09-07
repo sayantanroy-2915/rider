@@ -4,6 +4,7 @@ import com.example.rider.exception.CustomException;
 import com.example.rider.model.LoginReqDTO;
 import com.example.rider.model.Rider;
 import com.example.rider.model.RiderDetails;
+import com.example.rider.model.UpdateDTO;
 import com.example.rider.repository.RiderRepository;
 import com.example.rider.util.JWTUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,6 +54,18 @@ public class UserService implements UserDetailsService {
 		throw new CustomException("Token expired");
 	}
 
+	public RiderDetails updateRiderDetails(UpdateDTO updateDTO) throws CustomException {
+		Rider newRider = updateDTO.getRider();
+		Rider oldRider = repo.findById(newRider.getId()).get();
+		System.out.println(oldRider+"\n\t"+updateDTO.getOldPassword()+"\n\t"+oldRider.getPassword().substring(8));
+		System.out.println(newRider+"\n\t"+newRider.getPassword());
+		if (passwordEncoder.matches(updateDTO.getOldPassword(), oldRider.getPassword().substring(8))) {
+			newRider.setPassword("{bcrypt}"+passwordEncoder.encode(newRider.getPassword()));
+			return new RiderDetails(repo.save(newRider));
+		}
+		throw new CustomException("Old password is incorrect");
+	}
+
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		Optional<Rider> opr = repo.findByContact(username);
@@ -61,12 +74,4 @@ public class UserService implements UserDetailsService {
 			return opr.get();
 		throw new UsernameNotFoundException("Rider not found");
 	}
-
-/*	private boolean update(AuthUpdate authUpdate) {
-		switch (authUpdate.getField()) {
-			case "password":
-
-		}
-	}*/
-
 }

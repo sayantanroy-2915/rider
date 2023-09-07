@@ -27,8 +27,7 @@ public class RiderController {
 	@PostMapping("/update-all")
 	private ResponseEntity<?> update(@RequestBody UpdateDTO updateDTO) {
 		try {
-			System.out.println(updateDTO);
-			return ResponseEntity.ok(null);
+			return ResponseEntity.ok(service.updateRiderDetails(updateDTO));
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
 		}

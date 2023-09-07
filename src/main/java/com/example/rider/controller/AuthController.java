@@ -29,7 +29,6 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginReqDTO body) {
         try {
-            System.out.println("In AuthController: "+body);
             return ResponseEntity.ok(authService.login(body));
         } catch (AuthenticationException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());

@@ -24,4 +24,16 @@ public class RiderDetails {
 	public String getName() {
 		return name;
 	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public String getEmail() {
+		return email;
+	}
 }
