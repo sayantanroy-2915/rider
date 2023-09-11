@@ -1,0 +1,10 @@
+# RUN ZOOKEEPER (WINDOWS)
+bin\windows\zookeeper-server-start.bat config\zookeeper.properties
+
+# RUN KAFKA (WINDOWS)
+bin\windows\kafka-server-start.bat config\server.properties
+
+# KAFKA CLI TOOLS
+kafka-topics            To create new topics
+kafka-console-producer  To produce message
+kafka-console-consumer  To consume message

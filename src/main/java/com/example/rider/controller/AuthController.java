@@ -20,7 +20,7 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegisterDTO body) {
         try {
-            return ResponseEntity.ok(authService.register(body));
+            return ResponseEntity.status(HttpStatus.CREATED).body(authService.register(body));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }

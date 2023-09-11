@@ -1,7 +1,7 @@
 package com.example.rider.controller;
 
 import com.example.rider.model.*;
-import com.example.rider.service.UserService;
+import com.example.rider.service.RiderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 public class RiderController {
 
 	@Autowired
-	private UserService service;
+	private RiderService service;
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;
