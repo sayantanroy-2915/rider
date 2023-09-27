@@ -1,4 +1,4 @@
-package com.example.rider.model;
+package com.example.rider.model.dto;
 
 public class LoginReqDTO {
     private String username;

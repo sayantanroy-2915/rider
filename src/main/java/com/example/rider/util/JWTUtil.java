@@ -1,6 +1,5 @@
 package com.example.rider.util;
 
-import com.example.rider.model.Rider;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -9,7 +8,6 @@ import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
@@ -39,7 +37,7 @@ public class JWTUtil implements Serializable {
         return extractExpiry(token).before(new Date());
     }
 
-    private String createToken(Map<String, Object> claims) {
+    public String createToken(Map<String, Object> claims) {
         return Jwts.builder().setClaims(claims)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + tokenValidity))
@@ -47,12 +45,6 @@ public class JWTUtil implements Serializable {
     }
 
     // Specific
-
-    public String generateToken(Long riderId) {
-        Map<String, Object> claims = new HashMap<>();
-        claims.put("RiderID", riderId);
-        return createToken(claims);
-    }
 
     private Long getRiderId(Claims claims) {
         return Long.parseLong(claims.get("RiderID").toString());

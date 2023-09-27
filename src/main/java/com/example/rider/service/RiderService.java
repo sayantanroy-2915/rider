@@ -1,12 +1,10 @@
 package com.example.rider.service;
 
 import com.example.rider.exception.CustomException;
-import com.example.rider.model.LoginReqDTO;
-import com.example.rider.model.Rider;
-import com.example.rider.model.RiderDetails;
-import com.example.rider.model.UpdateDTO;
+import com.example.rider.model.entity.Rider;
+import com.example.rider.model.dto.RiderDetails;
+import com.example.rider.model.dto.UpdatePasswordDTO;
 import com.example.rider.repository.RiderRepository;
-import com.example.rider.util.JWTUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -14,6 +12,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -25,45 +24,53 @@ public class RiderService implements UserDetailsService {
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
-	@Autowired
-	private JWTUtil jwtUtil;
+//	@Autowired
+//	private TokenService tokenService;
 
-	public Rider addRider (Rider rider) {
-		return repo.save(rider);
-	}
 
-	public String authRider(LoginReqDTO loginReqDTO) throws Exception {
-		Optional<Rider> opr = repo.findByContact(loginReqDTO.getCred());
-		if (opr.isPresent()) {
-			Rider r = opr.get();
-			if (passwordEncoder.matches(loginReqDTO.getPassword(), r.getPassword()))
-				return jwtUtil.generateToken(r.getId());
-			throw new CustomException("Invalid credentials: " + loginReqDTO.getCred());
-		}
-		throw new CustomException("Rider not found");
-	}
+//	public String authRider(LoginReqDTO loginReqDTO) throws Exception {
+//		Optional<Rider> opr = repo.findByContact(loginReqDTO.getCred());
+//		if (opr.isPresent()) {
+//			Rider r = opr.get();
+//			if (passwordEncoder.matches(loginReqDTO.getPassword(), r.getPassword()))
+//				return tokenService.generateToken(r.getId());
+//			throw new CustomException("Invalid credentials: " + loginReqDTO.getCred());
+//		}
+//		throw new CustomException("Rider not found");
+//	}
 
-	public RiderDetails authRiderDetails(String token) throws Exception {
-		if (!jwtUtil.isTokenExpired(token)) {
-			Long riderId = jwtUtil.getRiderId(token);
-			Optional<Rider> opr = repo.findById(riderId);
-			if (opr.isPresent())
-				return new RiderDetails(opr.get());
-			throw new CustomException("Rider not found");
-		}
-		throw new CustomException("Token expired");
-	}
+//	public RiderDetails authRiderDetails(String token) throws Exception {
+//		if (!jwtUtil.isTokenExpired(token)) {
+//			Long riderId = jwtUtil.getRiderId(token);
+//			Optional<Rider> opr = repo.findById(riderId);
+//			if (opr.isPresent())
+//				return new RiderDetails(opr.get());
+//			throw new CustomException("Rider not found");
+//		}
+//		throw new CustomException("Token expired");
+//	}
 
-	public RiderDetails updateRiderDetails(UpdateDTO updateDTO) throws CustomException {
-		Rider newRider = updateDTO.getRider();
-		Rider oldRider = repo.findById(newRider.getId()).get();
-		System.out.println(oldRider+"\n\t"+updateDTO.getOldPassword()+"\n\t"+oldRider.getPassword().substring(8));
-		System.out.println(newRider+"\n\t"+newRider.getPassword());
-		if (passwordEncoder.matches(updateDTO.getOldPassword(), oldRider.getPassword().substring(8))) {
-			newRider.setPassword("{bcrypt}"+passwordEncoder.encode(newRider.getPassword()));
+	public RiderDetails updateRiderDetails(Rider newRider) throws CustomException {
+		Rider oldRider = repo.findById(newRider.getId()).orElse(null);
+		System.out.println("Old data: "+oldRider);
+		System.out.println("Updated Data: "+newRider);
+		if (passwordEncoder.matches(newRider.getPassword(), Objects.requireNonNull(oldRider).getPassword().substring(8))) {
+			newRider.setPassword(oldRider.getPassword());
 			return new RiderDetails(repo.save(newRider));
 		}
-		throw new CustomException("Old password is incorrect");
+		throw new CustomException("Password is incorrect");
+	}
+
+	public void updateRiderPassword(UpdatePasswordDTO updatePasswordDTO) throws CustomException {
+		System.out.println(updatePasswordDTO);
+		Rider rider = repo.findById(updatePasswordDTO.getId()).get();
+		System.out.println(rider);
+		if (passwordEncoder.matches(updatePasswordDTO.getOldPassword(), rider.getPassword().substring(8))) {
+			rider.setPassword("{bcrypt}"+passwordEncoder.encode(updatePasswordDTO.getNewPassword()));
+			repo.save(rider);
+		}
+		else
+			throw new CustomException("Password is incorrect");
 	}
 
 	@Override

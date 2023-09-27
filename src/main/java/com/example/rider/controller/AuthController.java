@@ -1,7 +1,7 @@
 package com.example.rider.controller;
 
-import com.example.rider.model.LoginReqDTO;
-import com.example.rider.model.RegisterDTO;
+import com.example.rider.model.dto.LoginReqDTO;
+import com.example.rider.model.dto.RegisterDTO;
 import com.example.rider.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,6 +16,11 @@ public class AuthController {
 
     @Autowired
     private AuthService authService;
+
+    @GetMapping("/")
+    public String home() {
+        return "Authorization Page";
+    }
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegisterDTO body) {

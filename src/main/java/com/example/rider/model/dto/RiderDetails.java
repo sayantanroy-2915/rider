@@ -1,5 +1,7 @@
-package com.example.rider.model;
+package com.example.rider.model.dto;
 
+
+import com.example.rider.model.entity.Rider;
 
 /**
  * Rider details except password
@@ -7,18 +9,18 @@ package com.example.rider.model;
  */
 public class RiderDetails {
 
-	private Long id;
-	private String name;
-	private String phone;
-	private String email;
-	private String status;
+	private final Long id;
+	private final String name;
+	private final String phone;
+	private final String email;
+	private final String city;
 
     public RiderDetails(Rider rider) {
 		this.id = rider.getId();
         this.name = rider.getName();
         this.phone = rider.getPhone();
         this.email = rider.getEmail();
-        this.status = rider.getStatus();
+		this.city = rider.getCity();
     }
 
 	public String getName() {
@@ -35,5 +37,9 @@ public class RiderDetails {
 
 	public String getEmail() {
 		return email;
+	}
+
+	public String getCity() {
+		return city;
 	}
 }

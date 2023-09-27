@@ -1,6 +1,7 @@
 package com.example.rider.controller;
 
-import com.example.rider.model.*;
+import com.example.rider.model.dto.UpdatePasswordDTO;
+import com.example.rider.model.entity.Rider;
 import com.example.rider.service.RiderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,21 +25,31 @@ public class RiderController {
 		return "Welcome Rider";
 	}
 
-	@PostMapping("/update-all")
-	private ResponseEntity<?> update(@RequestBody UpdateDTO updateDTO) {
+	@PostMapping("/update-details")
+	private ResponseEntity<?> update(@RequestBody Rider rider) {
 		try {
-			return ResponseEntity.ok(service.updateRiderDetails(updateDTO));
+			return ResponseEntity.ok(service.updateRiderDetails(rider));
 		} catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
 		}
 	}
 
-	@GetMapping("/get-rider-details")
-	private ResponseEntity<?> getRiderDetails(@RequestBody String token) {
+	@PostMapping("/update-password")
+	private ResponseEntity<?> updatePswd(@RequestBody UpdatePasswordDTO updatePasswordDTO) {
 		try {
-			return ResponseEntity.ok(service.authRiderDetails(token));
+			service.updateRiderPassword(updatePasswordDTO);
+			return ResponseEntity.ok("Password updated successfully");
 		} catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
 		}
 	}
+
+//	@GetMapping("/get-rider-details")
+//	private ResponseEntity<?> getRiderDetails(@RequestBody String token) {
+//		try {
+//			return ResponseEntity.ok(service.authRiderDetails(token));
+//		} catch (Exception e) {
+//			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+//		}
+//	}
 }

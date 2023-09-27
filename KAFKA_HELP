@@ -5,6 +5,18 @@ bin\windows\zookeeper-server-start.bat config\zookeeper.properties
 bin\windows\kafka-server-start.bat config\server.properties
 
 # KAFKA CLI TOOLS
-kafka-topics            To create new topics
+kafka-topics            To manage topics
 kafka-console-producer  To produce message
 kafka-console-consumer  To consume message
+
+# Syntax
+kafka-tool [--option param] --bootstrap-server localhost:9092
+
+# To create a new topic
+kafka-topics --create --topic topic-name --bootstrap-server localhost:9092
+
+# To send message to a topic
+kafka-console-producer --topic topic-name --bootstrap-server localhost:9092
+
+# To receive a message
+kafka-console-consumer --topic topic-name --bootstrap-server localhost:9092

@@ -1,6 +1,10 @@
 package com.example.rider.service;
 
-import com.example.rider.model.*;
+import com.example.rider.model.dto.LoginReqDTO;
+import com.example.rider.model.dto.LoginResDTO;
+import com.example.rider.model.dto.RegisterDTO;
+import com.example.rider.model.dto.RiderDetails;
+import com.example.rider.model.entity.Rider;
 import com.example.rider.repository.RiderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;

@@ -1,5 +1,7 @@
-package com.example.rider.model;
+package com.example.rider.model.entity;
 
+import com.example.rider.model.dto.RegisterDTO;
+import com.example.rider.model.RiderRole;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -7,18 +9,12 @@ import javax.persistence.*;
 import java.util.Collection;
 import java.util.HashSet;
 
+/**
+ * Entity class representing a rider
+ */
 @Entity
 @Table(name = "riders")
 public class Rider implements UserDetails {
-	@Override
-	public String toString() {
-		return "Rider{" +
-				"id=" + id +
-				", name='" + name + '\'' +
-				", phone='" + phone + '\'' +
-				", email='" + email + '\'' +
-				'}';
-	}
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,10 +33,18 @@ public class Rider implements UserDetails {
 	private String password;
 
 	@Column
-	private String status;
+	private String city;
 
 	public Rider() {
 		super();
+	}
+
+	public Rider(String name, String phone, String email, String password, String city) {
+		this.name = name;
+		this.phone = phone;
+		this.email = email;
+		this.password = password;
+		this.city = city;
 	}
 
 	public Rider(RegisterDTO registerDTO) {
@@ -49,7 +53,7 @@ public class Rider implements UserDetails {
 		this.phone = registerDTO.getPhone();
 		this.email = registerDTO.getEmail();
 		this.password = registerDTO.getPassword();
-		this.status = "unavailable";
+		this.city = registerDTO.getCity();
 	}
 
 	public Long getId() {
@@ -89,12 +93,22 @@ public class Rider implements UserDetails {
 		this.password = password;
 	}
 
-	public String getStatus() {
-		return status;
+	public String getCity() {
+		return city;
 	}
 
-	public void setStatus(String status) {
-		this.status = status;
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+	@Override
+	public String toString() {
+		return "Rider{" +
+				"id=" + id +
+				", name='" + name + "'" +
+				", phone='" + phone + "'" +
+				((email != null && !email.isEmpty())?(", email='" + email + "'"):"") +
+				", city='" + city + "'}";
 	}
 
 	@Override

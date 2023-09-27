@@ -1,4 +1,4 @@
-package com.example.rider.model;
+package com.example.rider.model.dto;
 
 /**
  * Rider Registration Request
@@ -10,6 +10,7 @@ public class RegisterDTO {
 	private String phone;
 	private String email;
 	private String password;
+    private String city;
 
     public RegisterDTO() {}
 
@@ -33,11 +34,17 @@ public class RegisterDTO {
         this.password = password;
     }
 
+    public String getCity() {
+        return city;
+    }
+
     @Override
     public String toString() {
-        return "RiderRegDTO{" +
-                "name='" + name + '\'' +
-                ", phone='" + phone + '\'' +
-                (email!=null?(", email='" + email ):"") + '}';
+        return "RegisterDTO{" +
+                "name=" + name +
+                ", phone=" + phone +
+                ", email=" + email +
+                ", city=" + city +
+                '}';
     }
 }
